@@ -8,39 +8,39 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  username String  @unique
+  id       String   @id @default(uuid())
+  username String   @unique
   password String
-  sessions Session[]
 }
 
 model Category {
-  id    String  @id @default(uuid())
-  name  String  @unique
-  slug  String  @unique
-  questions Question[]
+  id       String    @id @default(uuid())
+  name     String
+  slug     String    @unique
+  questions Question[] @relation("CategoryQuestions")
 }
+
 model Quiz {
   id        String     @id @default(uuid())
   title     String     @unique
   file      String
-  questions Question[]
+  questions Question[] @relation("QuizQuestions") // You can name this relation whatever you want
 }
 
 model Question {
   id         String    @id @default(uuid())
-  content    String    @unique
+  content    String
   quizId     String?
-  quiz       Quiz?     @relation(fields: [quizId], references: [id])
-  answers    Answer[]
-  Category   Category? @relation(fields: [categoryId], references: [id])
+  quiz       Quiz?     @relation("QuizQuestions", fields: [quizId], references: [id]) // Opposite relation
   categoryId String
+  category   Category  @relation("CategoryQuestions", fields: [categoryId], references: [id])
+  answers    Answer[]  @relation("QuestionAnswers")
 }
 
 model Answer {
   id         String   @id @default(uuid())
   content    String
   correct    Boolean
-  question   Question @relation(fields: [questionId], references: [id])
   questionId String
+  question   Question @relation("QuestionAnswers", fields: [questionId], references: [id]) // Opposite relation
 }

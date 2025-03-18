@@ -25,8 +25,8 @@ export default function RegisterForm() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Skráning mistókst.");
 
-      setSuccess("✅ Aðgangur búinn til! Þú verður fljótlega vísað áfram.");
-      setTimeout(() => router.push("/auth/login"), 2000); // Redirect after success
+      setSuccess("Aðgangur búinn til! Þú verður fljótlega vísað áfram.");
+      setTimeout(() => router.push("/auth/login"), 2000);
     } catch (error: any) {
       setError(error.message || "Villa kom upp.");
     }

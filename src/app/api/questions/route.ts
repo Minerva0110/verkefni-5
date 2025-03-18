@@ -1,16 +1,19 @@
-import { NextResponse } from "next/server";
-import prisma from "../../lib/prisma";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const quizId = searchParams.get("quizId");
+  try {
+    // Assuming you're fetching all questions from the database
+    const questions = await prisma.question.findMany({
+      include: {
+        answers: true, // You can also include answers if needed
+      },
+    });
 
-  if (!quizId) return NextResponse.json({ error: "Quiz ID required" }, { status: 400 });
-
-  const questions = await prisma.question.findMany({
-    where: { quizId },
-    include: { answers: true },
-  });
-
-  return NextResponse.json(questions);
+    return new Response(JSON.stringify(questions), { status: 200 });
+  } catch (error) {
+    console.error("Error fetching questions:", error);
+    return new Response("Failed to fetch questions", { status: 500 });
+  }
 }

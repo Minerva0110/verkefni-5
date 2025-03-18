@@ -3,8 +3,9 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Seeding database...");
+  console.log("Fræing á gagnagrunn...");
 
+  // Búa til flokka
   await prisma.category.createMany({
     data: [
       { name: "HTML", slug: "html" },
@@ -14,80 +15,71 @@ async function main() {
     skipDuplicates: true,
   });
 
+  // Sækja flokka og búa til kort til auðveldra leitunar
   const categories = await prisma.category.findMany();
   const categoryMap = Object.fromEntries(categories.map((c) => [c.slug, c.id]));
 
   console.log("Category Map:", categoryMap);
 
   if (!Object.keys(categoryMap).length) {
-    throw new Error("No categories found! Check database connection.");
+    throw new Error("Engir flokkar fundust! Athugaðu tenginguna við gagnagrunn.");
   }
 
-  for (const question of [
-    {
-      content: "Hvað gerir `<strong>` tag í HTML?",
-      categoryId: categoryMap["html"],
-      answers: [
-        { content: "Gerir texta feitletraðan með merkingarfræðilegu gildi.", correct: true },
-        { content: "Býr til stóran fyrirsagnatexta.", correct: false },
-        { content: "Gerir texta skáletraðan.", correct: false },
-        { content: "Engin af ofangreindum valkostum er rétt.", correct: false },
-      ],
-    },
-    {
-      content: "Hvaða CSS eign er notuð til að breyta bakgrunnslit á vefsíðu?",
-      categoryId: categoryMap["css"],
-      answers: [
-        { content: "background-color", correct: true },
-        { content: "color", correct: false },
-        { content: "border-color", correct: false },
-        { content: "background-image", correct: false },
-      ],
-    },
-    {
-      content: "Hvaða JavaScript aðgerð er notuð til að búa til nýtt fylki sem byggir á gögnum úr öðru fylki?",
-      categoryId: categoryMap["javascript"],
-      answers: [
-        { content: "map()", correct: true },
-        { content: "filter()", correct: false },
-        { content: "reduce()", correct: false },
-        { content: "forEach()", correct: false },
-      ],
-    },
-    {
-      content: "Hvað gerir `z-index` í CSS?",
-      categoryId: categoryMap["css"],
-      answers: [
-        { content: "Stjórnar hversu langt fram eða aftur element birtist.", correct: true },
-        { content: "Stillir hversu þykkt border á elementi er.", correct: false },
-        { content: "Breytir stærð texta.", correct: false },
-        { content: "Setur mynd á bakgrunninn.", correct: false },
-      ],
-    },
-    {
-      content: "Hvernig getur þú breytt texta inni í HTML elementi með JavaScript?",
-      categoryId: categoryMap["javascript"],
-      answers: [
-        { content: "document.getElementById('id').innerText = 'Nýr texti';", correct: true },
-        { content: "document.querySelector('id').text = 'Nýr texti';", correct: false },
-        { content: "document.getElementByClass('id').value = 'Nýr texti';", correct: false },
-        { content: "window.alert('Nýr texti');", correct: false },
-      ],
-    },
-  ]) {
-    await prisma.question.create({
-      data: {
-        content: question.content,
-        categoryId: question.categoryId,
-        answers: {
-          create: question.answers,
-        },
+  // Fræja Quizzes
+  const quiz1 = await prisma.quiz.create({
+    data: {
+      title: "Vefþróun Próf 1",
+      file: "web_dev_quiz_1.pdf",
+      questions: {
+        create: [
+          {
+            content: "Hvað gerir `<strong>` tagið í HTML?",
+            categoryId: categoryMap["html"],
+            answers: {
+              create: [
+                { content: "Gerir texta feitan með merkingu.", correct: true },
+                { content: "Býr til stór fyrirsagnir.", correct: false },
+                { content: "Gerir texta italíseraðan.", correct: false },
+                { content: "Enginn af ofangreindum.", correct: false },
+              ]
+            },
+          },
+        ],
       },
-    });
-  }
+    },
+  });
 
+  const quiz2 = await prisma.quiz.create({
+    data: {
+      title: "CSS Próf 1",
+      file: "css_quiz_1.pdf", // Fyrirgefðu, það er aðeins sýndur staður
+      questions: {
+        create: [
+          {
+            content: "Hvaða CSS eiginleiki er notaður til að breyta bakgrunnslit vefsíðu?",
+            categoryId: categoryMap["css"],
+            answers: {
+              create: [
+                { content: "background-color", correct: true },
+                { content: "color", correct: false },
+                { content: "border-color", correct: false },
+                { content: "none of the above", correct: false },
+              ]
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  console.log("Fræjað quiz ID: ", quiz1.id, quiz2.id);
 }
 
 main()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect());
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
