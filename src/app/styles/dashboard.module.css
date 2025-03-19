@@ -5,7 +5,7 @@
     justify-content: center;
     text-align: center;
     min-height: 100vh;
-    background-color: #f9f9f9;
+    background: #89CFF0;
     padding: 20px;
     color: #222;
   }
@@ -47,7 +47,7 @@
   .logoutButton {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #FF4C4C;
+    background-color: #c72020;
     border: none;
     color: white;
     cursor: pointer;

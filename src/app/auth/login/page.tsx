@@ -1,9 +1,10 @@
 "use client";
 
-import { signIn, useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
+import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import styles from "../../../app/styles/auth.module.css";
 
 export default function LoginPage() {
   const { data: session } = useSession();
@@ -12,7 +13,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // Redirect user if already logged in
   useEffect(() => {
     if (session) {
       router.push("/dashboard");
@@ -21,8 +21,8 @@ export default function LoginPage() {
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
-
     setError(""); 
+
     const res = await signIn("credentials", {
       username,
       password,
@@ -30,46 +30,52 @@ export default function LoginPage() {
     });
 
     if (res?.error) {
-      setError("Villa: Vitlaus notandanafn eða lykilorð.");
+      setError("❌ Villa: Vitlaust notandanafn eða lykilorð.");
     } else {
       router.push("/dashboard");
     }
   }
 
   return (
-    <div className="login-container">
-      <h1>Innskráning</h1>
-      <p>Sláðu inn notendaupplýsingar þínar.</p>
+    <div className={styles.loginContainer}>
+      <div className={styles.loginBox}>
+        <h1>Innskráning</h1>
+        <p>Sláðu inn notendaupplýsingar þínar.</p>
 
-      {error && <p style={{ color: "red" }}>{error}</p>} {/* Show errors */}
+        {error && <p className={styles.loginError}>{error}</p>}
 
-      <form onSubmit={handleLogin}>
-        <label htmlFor="username">Notandanafn</label>
-        <input
-          id="username"
-          type="text"
-          placeholder="Notandanafn"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
+        <form onSubmit={handleLogin}>
+          <label htmlFor="username">Notandanafn</label>
+          <input
+            id="username"
+            type="text"
+            placeholder="Notandanafn"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className={styles.loginInput}
+            required
+          />
 
-        <label htmlFor="password">Lykilorð</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="Lykilorð"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <label htmlFor="password">Lykilorð</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Lykilorð"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={styles.loginInput}
+            required
+          />
 
-        <button type="submit">Skrá inn</button>
-      </form>
+          <button type="submit" className={styles.loginButton}>
+            🔑 Skrá inn
+          </button>
+        </form>
 
-      <p>
-        Áttu ekki aðgang? <Link href="/auth/register">Nýskráning</Link>
-      </p>
+        <p className={styles.loginLink}>
+          Áttu ekki aðgang? <Link href="../auth/register">Nýskráning</Link>
+        </p>
+      </div>
     </div>
   );
 }

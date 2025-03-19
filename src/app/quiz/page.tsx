@@ -1,47 +1,70 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 
-type Answer = {
+interface Answer {
   id: string;
-  answer: string;
+  content: string;
   correct: boolean;
-};
+}
 
-type Question = {
+interface Question {
   id: string;
-  question: string;
+  content: string;
   answers: Answer[];
-};
+}
+
+interface Quiz {
+  id: string;
+  title: string;
+  questions: Question[];
+}
 
 export default function QuizPage({ params }: { params: { quizId: string } }) {
   const { quizId } = params;
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`/api/questions?quizId=${quizId}`)
-      .then((res) => res.json())
-      .then((data: Question[]) => setQuestions(data));
+    const fetchQuiz = async () => {
+      try {
+        const res = await fetch(`/api/quiz/${quizId}`);
+        if (!res.ok) throw new Error("Quiz not found");
+        const data = await res.json();
+        setQuiz(data);
+      } catch (error) {
+        setError("Failed to load quiz");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuiz();
   }, [quizId]);
 
-  if (questions.length === 0) return <p>Loading questions...</p>;
+  if (loading) return <p>Hleð inn prófi...</p>;
+  if (error) return <p>{error}</p>;
+  if (!quiz) return <p>Engin próf fundust.</p>;
 
   const handleAnswerClick = (correct: boolean) => {
     if (correct) setScore(score + 1);
     setCurrentIndex(currentIndex + 1);
   };
 
-  if (currentIndex >= questions.length) {
-    return <h2>You scored {score} / {questions.length} 🎉</h2>;
+  if (currentIndex >= quiz.questions.length) {
+    return <h2>Þú fékkst {score} af {quiz.questions.length} rétt! 🎉</h2>;
   }
 
   return (
     <div>
-      <h2>{questions[currentIndex].question}</h2>
-      {questions[currentIndex].answers.map((answer) => (
+      <h1>{quiz.title}</h1>
+      <h2>{quiz.questions[currentIndex].content}</h2>
+      {quiz.questions[currentIndex].answers.map((answer) => (
         <button key={answer.id} onClick={() => handleAnswerClick(answer.correct)}>
-          {answer.answer}
+          {answer.content}
         </button>
       ))}
     </div>

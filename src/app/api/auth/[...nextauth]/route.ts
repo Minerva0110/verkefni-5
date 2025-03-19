@@ -1,13 +1,14 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../../lib/prisma";
 import bcrypt from "bcryptjs";
 
 declare module "next-auth" {
   interface User {
     id: string;
     username: string;
+    name?: string;
   }
 
   interface Session {
@@ -15,7 +16,6 @@ declare module "next-auth" {
   }
 }
 
-const prisma = new PrismaClient();
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -44,12 +44,12 @@ export const authOptions: AuthOptions = {
           throw new Error("Vitlaust lykilorð.");
         }
 
-        return { id: user.id, username: user.username }; 
+        return { id: user.id, username: user.username, name: user.name ?? undefined };
       },
     }),
   ],
   session: {
-    strategy: "jwt", 
+    strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
@@ -57,6 +57,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.id = user.id;
         token.username = user.username;
+        token.name = user.name; 
       }
       return token;
     },
@@ -65,13 +66,14 @@ export const authOptions: AuthOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.username = token.username as string;
+        session.user.name = token.name as string; 
       }
       return session;
     },
   },
 
   pages: {
-    signIn: "/auth/login", 
+    signIn: "/auth/login",
   },
 };
 

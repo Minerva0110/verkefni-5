@@ -1,0 +1,187 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: #89CFF0;
+    color: #222;
+  }
+
+  .addQuestionButton {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .addQuestionButton:hover {
+    background: #0056b3;
+  }
+  
+  .loading,
+  .error,
+  .noQuestions {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 20px;
+  }
+  
+  .questionList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .questionCard {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .questionCard h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+
+ 
+  .answers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .answerButton {
+    background: #eee;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    color: #222 
+  }
+  
+  .answerButton:hover {
+    background: #ddd;
+  }
+ 
+  .correct {
+    background: #4caf50 !important;
+    color: white;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+  }
+  
+  .wrong {
+    background: #f44336 !important;
+    color: white;
+    box-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
+  }
+  
+  @media (max-width: 600px) {
+    .questionCard {
+      width: 90%;
+    }
+  
+    .answerButton {
+      font-size: 0.9rem;
+      padding: 10px;
+    }
+  }
+
+  /* 🌟 Add Question Form */
+.addQuestionContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #89CFF0;;
+    padding: 20px;
+    color:#222;
+  }
+  
+  .addQuestionBox {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px;
+  }
+  
+  .addQuestionBox h1 {
+    margin-bottom: 15px;
+    font-size: 24px;
+  }
+  
+  .addQuestionBox form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .addQuestionInput {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #ccc;
+    font-size: 16px;
+  }
+  
+  .addQuestionButton {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+  }
+  
+  .addQuestionButton:hover {
+    background: #0056b3;
+  }
+  
+  .answerOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .answerRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+.checkbox {
+    transform: scale(1.2);
+    transition: accent-color 0.3s ease; 
+  }
+  
+ 
+  .checkbox:checked {
+    accent-color: green;
+  }
+  
+  

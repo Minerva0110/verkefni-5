@@ -3,7 +3,7 @@
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import styles from "../dashboard.module.css"; // ✅ Import the new CSS module
+import styles from "../styles/dashboard.module.css";
 
 interface Category {
   id: string;
@@ -33,35 +33,27 @@ export default function Dashboard() {
     fetchCategories();
   }, []);
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading") return <p>Hleður inn...</p>;
   if (!session?.user) {
-    return (
-      <div>
-        <h1>Please sign in to access the dashboard</h1>
-      </div>
-    );
+    return <h1>Vinsamlegast skráðu þig aftur inn</h1>;
   }
 
   return (
     <div className={styles.dashboardContainer}>
-      <h1>Welcome, {session.user.name || "User"}!</h1>
-      <p>User ID: {session.user.id}</p>
+      <h1>Velkominn, {session.user.name || session.user.username || "User"}!</h1> 
+    
 
-      <h2>Select a Category:</h2>
+      <h2>Veldu flokk til að læra:</h2>
       {loading ? (
-        <p>Loading categories...</p>
+        <p>Hleð inn flokkum...</p>
       ) : error ? (
         <p>{error}</p>
       ) : categories.length === 0 ? (
-        <p>No categories available.</p>
+        <p>Engir flokkar fundust.</p>
       ) : (
         <div className={styles.categoryList}>
           {categories.map((category) => (
-            <Link
-              key={category.id}
-              href={`/questions?categoryId=${category.id}`}
-              className={styles.categoryBox}
-            >
+            <Link key={category.id} href={`/questions?categoryId=${category.id}`} className={styles.categoryBox}>
               {category.name}
             </Link>
           ))}
@@ -69,7 +61,7 @@ export default function Dashboard() {
       )}
 
       <button onClick={() => signOut()} className={styles.logoutButton}>
-        Logout
+        Útskrá
       </button>
     </div>
   );
