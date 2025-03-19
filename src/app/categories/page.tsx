@@ -1,32 +1,24 @@
-// /src/app/categories/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface Category {
   id: string;
   name: string;
-  slug: string;
-  questions: {
-    id: string;
-    content: string;
-  }[];
 }
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await fetch("/api/categories");
-
-        if (!res.ok) {
-          throw new Error(`HTTP Error: ${res.statusText}`);
-        }
-
+        if (!res.ok) throw new Error(`HTTP Error: ${res.statusText}`);
         const data = await res.json();
         setCategories(data);
       } catch (error) {
@@ -40,31 +32,21 @@ const CategoriesPage = () => {
     fetchCategories();
   }, []);
 
-  if (loading) {
-    return <p>Loading categories...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
-  if (categories.length === 0) {
-    return <p>No categories available.</p>;
-  }
+  if (loading) return <p>Loading categories...</p>;
+  if (error) return <p>{error}</p>;
+  if (categories.length === 0) return <p>No categories available.</p>;
 
   return (
     <div>
       <h1>Categories</h1>
       {categories.map((category) => (
         <div key={category.id} style={{ marginBottom: "20px" }}>
-          <h2>{category.name}</h2>
-          <p>Slug: {category.slug}</p>
-          <h3>Questions:</h3>
-          <ul>
-            {category.questions.map((question) => (
-              <li key={question.id}>{question.content}</li>
-            ))}
-          </ul>
+          <h2
+            style={{ cursor: "pointer", color: "blue" }}
+            onClick={() => router.push(`/questions?categoryId=${category.id}`)}
+          >
+            {category.name}
+          </h2>
         </div>
       ))}
     </div>

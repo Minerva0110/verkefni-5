@@ -8,15 +8,15 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(uuid())
-  username String   @unique
+  id       String @id @default(uuid())
+  username String @unique
   password String
 }
 
 model Category {
-  id       String    @id @default(uuid())
-  name     String
-  slug     String    @unique
+  id        String     @id @default(uuid())
+  name      String
+  slug      String     @unique
   questions Question[] @relation("CategoryQuestions")
 }
 
@@ -24,17 +24,17 @@ model Quiz {
   id        String     @id @default(uuid())
   title     String     @unique
   file      String
-  questions Question[] @relation("QuizQuestions") // You can name this relation whatever you want
+  questions Question[] @relation("QuizQuestions")
 }
 
 model Question {
-  id         String    @id @default(uuid())
+  id         String   @id @default(uuid())
   content    String
   quizId     String?
-  quiz       Quiz?     @relation("QuizQuestions", fields: [quizId], references: [id]) // Opposite relation
   categoryId String
-  category   Category  @relation("CategoryQuestions", fields: [categoryId], references: [id])
-  answers    Answer[]  @relation("QuestionAnswers")
+  answers    Answer[] @relation("QuestionAnswers")
+  category   Category @relation("CategoryQuestions", fields: [categoryId], references: [id])
+  quiz       Quiz?    @relation("QuizQuestions", fields: [quizId], references: [id])
 }
 
 model Answer {
@@ -42,5 +42,5 @@ model Answer {
   content    String
   correct    Boolean
   questionId String
-  question   Question @relation("QuestionAnswers", fields: [questionId], references: [id]) // Opposite relation
+  question   Question @relation("QuestionAnswers", fields: [questionId], references: [id])
 }
