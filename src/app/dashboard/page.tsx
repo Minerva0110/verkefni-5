@@ -60,9 +60,17 @@ export default function Dashboard() {
         </div>
       )}
 
-      <button onClick={() => signOut()} className={styles.logoutButton}>
-        Útskrá
-      </button>
+<button
+  onClick={() =>
+    signOut().then(() => {
+      window.location.href = "/";
+    })
+  }
+  className={styles.logoutButton}
+>
+  Útskrá
+</button>
     </div>
   );
 }
+
