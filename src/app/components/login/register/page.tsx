@@ -27,8 +27,12 @@ export default function RegisterForm() {
 
       setSuccess("Aðgangur búinn til! Þú verður fljótlega vísað áfram.");
       setTimeout(() => router.push("/auth/login"), 2000);
-    } catch (error: any) {
-      setError(error.message || "Villa kom upp.");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message || "Villa kom upp.");
+      } else {
+        setError("Óþekkt villa kom upp.");
+      }
     }
   }
 

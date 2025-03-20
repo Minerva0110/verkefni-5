@@ -44,7 +44,7 @@ const QuestionsPage = () => {
         }));
 
         setQuestions(shuffledQuestions);
-        setSelectedAnswers(data.reduce((acc: any, q: Question) => ({ ...acc, [q.id]: null }), {}));
+        setSelectedAnswers(data.reduce((acc: { [key: string]: string | null }, q: Question) => ({ ...acc, [q.id]: null }), {}));
       } catch (error) {
         setError("Failed to fetch questions");
         console.error("Error fetching questions:", error);
@@ -56,7 +56,7 @@ const QuestionsPage = () => {
     fetchQuestions();
   }, [categoryId]);
 
-  const handleAnswerClick = (questionId: string, answerId: string, isCorrect: boolean) => {
+  const handleAnswerClick = (questionId: string, answerId: string) => {
     setSelectedAnswers((prev) => ({ ...prev, [questionId]: answerId }));
   };
 
@@ -84,7 +84,7 @@ const QuestionsPage = () => {
                   <button
                     key={answer.id}
                     className={`${styles.answerButton} ${isSelected ? (answer.correct ? styles.correct : styles.wrong) : ""}`}
-                    onClick={() => handleAnswerClick(question.id, answer.id, answer.correct)}
+                    onClick={() => handleAnswerClick(question.id, answer.id)}
                   >
                     {answer.content}
                   </button>
