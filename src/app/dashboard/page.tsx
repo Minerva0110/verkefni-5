@@ -23,9 +23,7 @@ export default function Dashboard() {
         if (!res.ok) throw new Error("Failed to fetch categories");
         const data = await res.json();
         setCategories(data);
-        if (error) {
-          console.error(error);
-        }        
+      } catch {
         setError("Error fetching categories");
       } finally {
         setLoading(false);
