@@ -10,7 +10,7 @@ interface ForsidaData {
   allHomepages: {
     title: string;
     content: {
-      value: any;
+      value: string;
     };
   }[];
 }

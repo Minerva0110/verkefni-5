@@ -10,7 +10,7 @@ interface Frett {
   hofundur: string;
   date: string;
   content: {
-    value: any;
+    value: string;
   };
   image?: {
     url: string;
