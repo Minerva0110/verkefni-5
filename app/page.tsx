@@ -2,7 +2,6 @@ import { client } from "../lib/datocms";
 import { GET_FORSIDA } from "../lib/queries";
 import { StructuredText } from "react-datocms";
 import Link from "next/link";
-import Footer from "../components/footer";
 import "../styles/globals.scss";
 
 
