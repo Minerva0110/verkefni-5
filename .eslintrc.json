@@ -3,9 +3,16 @@
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": ["error"],
-    "@typescript-eslint/no-explicit-any": "off",
-    "no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off", 
+    "no-unused-vars": "off", 
     "no-console": "off",
-    "react/prop-types": "off"
-  }
+    "react/prop-types": "off" 
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "rules": {
+      }
+    }
+  ]
 }
