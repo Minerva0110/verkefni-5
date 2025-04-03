@@ -2,7 +2,9 @@ import { client } from "../lib/datocms";
 import { GET_FORSIDA } from "../lib/queries";
 import { StructuredText } from "react-datocms";
 import Link from "next/link";
+import Footer from "../components/footer";
 import "../styles/globals.scss";
+
 
 
 interface ForsidaData {
@@ -19,20 +21,24 @@ export default async function HomePage() {
     const forsida = data.allHomepages[0];
   
     return (
-        <div className="centeredContent">
-      <main>
-        <h1>{forsida.title}</h1>
-        <StructuredText data={forsida.content} />
-        <p>
-          <Link
-            href="/frettir"
-            className="btn"
-          >
-            Skoða fréttir →
-          </Link>
-        </p>
-      </main>
-      </div>
+        <div>
+          <div className="centeredContent">
+            <main>
+              <h1>{forsida.title}</h1>
+              <StructuredText data={forsida.content} />
+              <p>
+                <Link
+                  href="/frettir"
+                  className="btn"
+                >
+                  Skoða fréttir →
+                </Link>
+              </p>
+            </main>
+            <div>
+            </div>
+          </div>
+        </div>
     );
   }
   

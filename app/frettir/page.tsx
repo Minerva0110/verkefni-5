@@ -2,6 +2,7 @@ import { client } from "../../lib/datocms";
 import { GET_ALL_FRETTIR } from "../../lib/queries";
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "../../components/footer";
 
 interface Frett {
   id: string;
