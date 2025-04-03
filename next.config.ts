@@ -1,7 +1,11 @@
-import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
+const nextConfig: import('next').NextConfig = {
+  images: {
+    domains: ['www.datocms-assets.com'],
+  },
 };
+
+module.exports = nextConfig;
+
 
 export default nextConfig;
