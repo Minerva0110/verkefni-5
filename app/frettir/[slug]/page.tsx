@@ -2,7 +2,7 @@ import { client } from "../../../lib/datocms";
 import { GET_SINGLE_FRETT } from "../../../lib/queries";
 import { StructuredText } from "react-datocms";
 import Link from "next/link";
-import Image from "next/image";
+import Image from 'next/image';
 import { notFound } from "next/navigation";
 
 interface Frett {
@@ -23,7 +23,9 @@ interface SingleFrettResponse {
 }
 
 interface PageProps {
-  params: { slug: string }; 
+  params: { 
+    slug: string;
+}; 
 }
 
 export default async function FrettPage({ params }: PageProps) {
@@ -37,7 +39,7 @@ export default async function FrettPage({ params }: PageProps) {
 
   return (
     <main style={{ padding: "2rem" }}>
-      <h1>{frett.title}</h1>
+      <h2>{frett.title}</h2>
       <p><strong>Höfundur:</strong> {frett.hofundur}</p>
       <p><strong>Dagsetning:</strong> {new Date(frett.date).toLocaleDateString("is-IS")}</p>
 
@@ -48,6 +50,7 @@ export default async function FrettPage({ params }: PageProps) {
             alt={frett.image.alt || frett.title}
             width={800}
             height={500}
+            priority
           />
         </div>
       )}

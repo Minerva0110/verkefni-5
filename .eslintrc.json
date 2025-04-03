@@ -3,6 +3,11 @@
     "plugins": ["prettier"],
     "rules": {
       "prettier/prettier": ["error"]
-    }
+    },
+    "rules": {
+    "@typescript-eslint/no-explicit-any": "warn", 
+    "no-unused-vars": "warn", 
+    "no-console": "warn" 
+  }
   }
   
