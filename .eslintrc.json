@@ -5,6 +5,7 @@
     "prettier/prettier": ["error"],
     "@typescript-eslint/no-explicit-any": "off",
     "no-unused-vars": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "react/prop-types": "off"
   }
 }
