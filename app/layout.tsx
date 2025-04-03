@@ -1,8 +1,9 @@
+
 import "../styles/globals.scss";
 
 export const metadata = {
   title: "Fréttavefur",
-  description: "Vefforritun 2 verkefni 5",
+  description: "Verkefni 5 í vefforritun",
 };
 
 export default function RootLayout({
